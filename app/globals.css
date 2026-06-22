@@ -1,26 +1,324 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ============================================================
+   DJ Shipping — "Meridian: Precision Logistics" design system
+   Light enterprise theme · cobalt blue + cargo amber
+   ============================================================ */
+
+@theme {
+  /* ---- Brand: maritime cobalt blue ---- */
+  --color-brand-50: #eef4ff;
+  --color-brand-100: #d9e6ff;
+  --color-brand-200: #b6cdff;
+  --color-brand-300: #84acff;
+  --color-brand-400: #4f86fa;
+  --color-brand-500: #1f63ec;
+  --color-brand: #0b5cd6;
+  --color-brand-600: #0b5cd6;
+  --color-brand-700: #0a4aad;
+  --color-brand-800: #0c3d8a;
+  --color-brand-900: #0b2f6b;
+  --color-brand-950: #082450;
+
+  /* ---- Accent: cargo amber ---- */
+  --color-accent-50: #fff4e8;
+  --color-accent-100: #ffe2c4;
+  --color-accent-300: #ffb86a;
+  --color-accent: #f47b1c;
+  --color-accent-600: #e26a0c;
+  --color-accent-700: #bb540a;
+
+  /* ---- Ink + neutrals (text on light) ---- */
+  --color-ink: #0f1b2d;
+  --color-ink-700: #2b3a52;
+  --color-muted: #5a6a82;
+  --color-line: #e4eaf3;
+  --color-line-strong: #d3dded;
+
+  /* ---- Light surfaces ---- */
+  --color-paper: #ffffff;
+  --color-surface: #f5f8fd;
+  --color-surface-2: #eaf1fa;
+
+  /* ---- Deep sections (footer / CTA / hero scrim) ---- */
+  --color-deep: #08214a;
+  --color-deep-2: #0b2f6b;
+  --color-deep-line: #1c4488;
+  --color-on-deep: #eaf1fb;
+  --color-on-deep-muted: #9fb6da;
+
+  /* ---- Radii ---- */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+
+  /* ---- Elevation (tuned for light UI) ---- */
+  --shadow-e1: 0 1px 2px rgba(15, 27, 45, 0.04), 0 1px 3px rgba(15, 27, 45, 0.06);
+  --shadow-e2: 0 4px 12px rgba(15, 27, 45, 0.06), 0 2px 4px rgba(15, 27, 45, 0.05);
+  --shadow-e3: 0 18px 40px -12px rgba(11, 47, 107, 0.18), 0 6px 14px rgba(15, 27, 45, 0.06);
+  --shadow-brand: 0 16px 36px -12px rgba(11, 92, 214, 0.42);
+  --shadow-accent: 0 14px 30px -10px rgba(244, 123, 28, 0.45);
+
+  /* ---- Fonts (wired from next/font) ---- */
+  --font-display: var(--font-archivo), "Archivo", system-ui, sans-serif;
+  --font-sans: var(--font-plex-sans), "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
+
+  /* ---- Motion ---- */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+
+  /* ---- Fluid display sizes ---- */
+  --text-display: clamp(2.6rem, 1.4rem + 4.6vw, 5rem);
+  --text-display--line-height: 0.98;
+  --text-section: clamp(2rem, 1.3rem + 2.6vw, 3.25rem);
+  --text-section--line-height: 1.04;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* ============================================================
+   Base
+   ============================================================ */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-brand) 22%, transparent);
+    color: var(--color-ink);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ============================================================
+   Layout helpers
+   ============================================================ */
+
+.container-x {
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container-x {
+    padding-inline: 2.5rem;
+  }
+}
+
+/* mono eyebrow / data label — the signature detail */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum" 1;
+}
+
+/* ============================================================
+   Decorative backgrounds / textures
+   ============================================================ */
+
+/* fine engineering grid */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(11, 47, 107, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(11, 47, 107, 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+.bg-grid-deep {
+  background-image:
+    linear-gradient(to right, rgba(122, 165, 233, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(122, 165, 233, 0.08) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+.bg-dots {
+  background-image: radial-gradient(rgba(11, 47, 107, 0.09) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* soft radial brand glow */
+.glow-brand {
+  background: radial-gradient(circle at center, rgba(11, 92, 214, 0.16) 0%, transparent 68%);
+  pointer-events: none;
+}
+.glow-accent {
+  background: radial-gradient(circle at center, rgba(244, 123, 28, 0.18) 0%, transparent 68%);
+  pointer-events: none;
+}
+
+/* duotone photo treatment — tints stock photos to the brand */
+.duotone {
+  position: relative;
+  overflow: hidden;
+}
+.duotone > img {
+  filter: grayscale(0.55) contrast(1.06) brightness(0.92);
+}
+.duotone::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(150deg, rgba(8, 33, 74, 0.82) 0%, rgba(11, 92, 214, 0.42) 55%, rgba(8, 33, 74, 0.5) 100%);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+.duotone-soft::after {
+  background: linear-gradient(160deg, rgba(8, 33, 74, 0.62) 0%, rgba(11, 92, 214, 0.28) 60%, rgba(8, 33, 74, 0.4) 100%);
+}
+
+/* gradient text for key numerals */
+.text-gradient-brand {
+  background: linear-gradient(120deg, var(--color-brand-400), var(--color-brand-700));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* hairline corner ticks for "manifest" cards */
+.tick-corners::before,
+.tick-corners::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: var(--color-brand);
+  opacity: 0.6;
+}
+.tick-corners::before {
+  top: 12px;
+  left: 12px;
+  border-top: 1.5px solid;
+  border-left: 1.5px solid;
+}
+.tick-corners::after {
+  bottom: 12px;
+  right: 12px;
+  border-bottom: 1.5px solid;
+  border-right: 1.5px solid;
+}
+
+/* ============================================================
+   Reveal-on-scroll
+   ============================================================ */
+
+/* Reveals only hide when JS is available (.js set by inline script) — graceful no-JS fallback */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s var(--ease-out-quint), transform 0.7s var(--ease-out-quint);
+  will-change: opacity, transform;
+}
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* staggered children */
+.js .reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s var(--ease-out-quint), transform 0.6s var(--ease-out-quint);
+}
+.js .reveal-stagger.is-visible > * {
+  opacity: 1;
+  transform: none;
+}
+.reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0.04s; }
+.reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 0.10s; }
+.reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 0.16s; }
+.reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 0.22s; }
+.reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 0.28s; }
+.reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 0.34s; }
+
+/* corridor arc draw-in */
+.arc-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.4s var(--ease-out-quint);
+}
+.is-visible .arc-draw {
+  stroke-dashoffset: 0;
+}
+
+/* marquee for credential strip */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+@media (hover: hover) {
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+}
+
+/* slow float for accent shapes */
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.floaty { animation: floaty 7s ease-in-out infinite; }
+
+/* mobile drawer */
+.drawer-enter {
+  transform: translateX(100%);
+  transition: transform 0.32s var(--ease-out-quint);
+}
+.drawer-enter.is-open {
+  transform: translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal, .reveal-stagger > * { opacity: 1 !important; transform: none !important; }
+  .arc-draw { stroke-dashoffset: 0 !important; }
 }

@@ -1,65 +1,191 @@
-import Image from "next/image";
+import Link from "next/link";
+import HomeHero from "@/components/HomeHero";
+import MetricsStrip from "@/components/MetricsStrip";
+import CredentialStrip from "@/components/CredentialStrip";
+import Section from "@/components/Section";
+import SectionLabel from "@/components/SectionLabel";
+import Reveal from "@/components/Reveal";
+import FeatureCard from "@/components/FeatureCard";
+import ServiceCard from "@/components/ServiceCard";
+import ProcessTimeline from "@/components/ProcessTimeline";
+import PakistanMap from "@/components/PakistanMap";
+import CtaBand from "@/components/CtaBand";
+import Button from "@/components/Button";
+import Icon from "@/components/Icon";
+import { valueProps, services, industries } from "@/lib/data";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <>
+      <HomeHero />
+
+      {/* Metrics + why choose */}
+      <section className="relative bg-paper pb-20 md:pb-28">
+        <MetricsStrip overlap />
+        <div className="container-x mt-20 md:mt-28">
+          <Reveal className="max-w-2xl">
+            <SectionLabel>Why DJ Shipping</SectionLabel>
+            <h2 className="mt-5 font-display text-section font-extrabold text-ink">
+              The reliability multinationals build supply chains on
+            </h2>
+            <p className="mt-5 text-lg leading-relaxed text-muted">
+              A quarter century of licensed operations, nationwide reach, and
+              elite global network access — engineered for cargo owners who
+              cannot afford uncertainty.
+            </p>
+          </Reveal>
+          <Reveal
+            stagger
+            className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
+          >
+            {valueProps.map((v, i) => (
+              <FeatureCard
+                key={v.title}
+                title={v.title}
+                description={v.description}
+                icon={v.icon}
+                index={i}
+              />
+            ))}
+          </Reveal>
+        </div>
+      </section>
+
+      <CredentialStrip />
+
+      {/* Services */}
+      <Section tone="paper">
+        <Reveal className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div className="max-w-2xl">
+            <SectionLabel>What we do</SectionLabel>
+            <h2 className="mt-5 font-display text-section font-extrabold text-ink">
+              Three pillars of logistics mastery
+            </h2>
+            <p className="mt-5 text-lg leading-relaxed text-muted">
+              From port entry to final destination, an integrated service model
+              covers every stage of your cargo&rsquo;s journey.
+            </p>
+          </div>
+          <Button href="/services" variant="outline" icon="arrow">
+            All services
+          </Button>
+        </Reveal>
+        <Reveal stagger className="mt-12 grid gap-6 md:grid-cols-3">
+          {services.map((s) => (
+            <ServiceCard key={s.slug} service={s} />
+          ))}
+        </Reveal>
+      </Section>
+
+      {/* Process */}
+      <Section tone="surface">
+        <Reveal className="max-w-2xl">
+          <SectionLabel>How it works</SectionLabel>
+          <h2 className="mt-5 font-display text-section font-extrabold text-ink">
+            One partner, from enquiry to proof of delivery
+          </h2>
+          <p className="mt-5 text-lg leading-relaxed text-muted">
+            A single accountable team manages documentation, clearance, freight
+            and final-mile delivery — with visibility at every step.
           </p>
+        </Reveal>
+        <div className="mt-14">
+          <ProcessTimeline />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+      </Section>
+
+      {/* Industries */}
+      <Section tone="paper">
+        <Reveal className="max-w-2xl">
+          <SectionLabel>Industries served</SectionLabel>
+          <h2 className="mt-5 font-display text-section font-extrabold text-ink">
+            Specialised cargo expertise
+          </h2>
+          <p className="mt-5 text-lg leading-relaxed text-muted">
+            Sector-specific handling tied to the manufacturing hubs we operate
+            beside — from Faisalabad textiles to Sialkot surgical exports.
+          </p>
+        </Reveal>
+        <Reveal stagger className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {industries.map((ind, i) => (
+            <FeatureCard
+              key={ind.title}
+              title={ind.title}
+              description={ind.description}
+              icon={ind.icon}
+              index={i}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          ))}
+        </Reveal>
+      </Section>
+
+      {/* Network preview */}
+      <Section tone="surface">
+        <Reveal className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div className="max-w-2xl">
+            <SectionLabel>Network &amp; coverage</SectionLabel>
+            <h2 className="mt-5 font-display text-section font-extrabold text-ink">
+              Present where trade flows
+            </h2>
+            <p className="mt-5 text-lg leading-relaxed text-muted">
+              Five offices across Pakistan&rsquo;s commercial zones, backed by a
+              worldwide network covering every major shipping route.
+            </p>
+          </div>
+          <Button href="/network" variant="outline" icon="arrow">
+            Explore network
+          </Button>
+        </Reveal>
+        <div className="mt-12">
+          <PakistanMap />
         </div>
-      </main>
-    </div>
+      </Section>
+
+      {/* Proof */}
+      <Section tone="paper">
+        <Reveal className="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:items-center">
+          <div>
+            <SectionLabel>Proof in the numbers</SectionLabel>
+            <h2 className="mt-5 font-display text-section font-extrabold text-ink">
+              A track record cargo owners trust
+            </h2>
+            <p className="mt-5 text-lg leading-relaxed text-muted">
+              The credentials behind every shipment — measurable, verifiable, and
+              earned over 25 years of continuous operation.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Button href="/contact" icon="arrow">
+                Start a shipment
+              </Button>
+            </div>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {[
+              { n: "1 business day", l: "Quotation turnaround", icon: "clock" as const },
+              { n: "180+ countries", l: "Reachable via JC TRANS", icon: "globe" as const },
+              { n: "5 gateways", l: "Sea & dry ports operated", icon: "anchor" as const },
+              { n: "Zero-lapse", l: "Customs licence since 1999", icon: "shield" as const },
+            ].map((p) => (
+              <div
+                key={p.l}
+                className="rounded-2xl border border-line bg-surface p-6"
+              >
+                <Icon name={p.icon} size={24} className="text-brand-700" />
+                <p className="mt-4 font-display text-2xl font-extrabold text-ink">
+                  {p.n}
+                </p>
+                <p className="mt-1 text-sm text-muted">{p.l}</p>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+      </Section>
+
+      <CtaBand
+        eyebrow="Ready when you are"
+        title="Move your cargo with a partner that has done it for 25 years"
+        description="Tell us your origin, destination and commodity — and receive a competitive, end-to-end quotation within one business day."
+      />
+    </>
   );
 }
