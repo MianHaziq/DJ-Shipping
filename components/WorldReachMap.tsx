@@ -53,9 +53,7 @@ export default function WorldReachMap() {
 
         {/* origin node */}
         <g transform={`translate(${worldOrigin.x} ${worldOrigin.y})`}>
-          <circle r="3" fill="var(--color-accent)" opacity="0.2">
-            <animate attributeName="r" values="2.4;4;2.4" dur="2.4s" repeatCount="indefinite" />
-          </circle>
+          <circle r="3" fill="var(--color-accent)" className="pulse-ring" />
           <circle r="1.8" fill="var(--color-accent)" stroke="#fff" strokeWidth="0.4" />
           <text
             x="0"

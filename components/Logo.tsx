@@ -8,7 +8,7 @@ export default function Logo({ tone = "default" }: LogoProps) {
   const word = tone === "light" ? "text-white" : "text-ink";
   return (
     <span className="flex items-center gap-3">
-      <span className="relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-[11px] bg-gradient-to-br from-brand-500 to-brand-800 shadow-brand">
+      <span className="relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-[11px] bg-linear-to-br from-brand-500 to-brand-800 shadow-brand">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           {/* abstract cargo + forward motion mark */}
           <path d="M4 15.5 6 9h12l2 6.5" stroke="white" strokeWidth="1.7" strokeLinejoin="round" />

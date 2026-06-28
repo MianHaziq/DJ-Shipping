@@ -11,7 +11,7 @@ export default function CredentialStrip({ tone = "surface" }: CredentialStripPro
       <div className="container-x flex flex-col items-center gap-8 border-y border-line py-10 lg:flex-row lg:justify-between lg:gap-12">
         <div className="flex items-center gap-4">
           <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 border-accent/40 bg-accent/5">
-            <span className="font-display text-lg font-extrabold text-accent-600">
+            <span className="font-display text-lg font-extrabold text-accent-600 dark:text-accent-300">
               {company.years}
             </span>
           </span>
@@ -28,7 +28,7 @@ export default function CredentialStrip({ tone = "surface" }: CredentialStripPro
         <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5">
           {memberships.map((m) => (
             <div key={m.abbr} className="flex flex-col items-center text-center">
-              <span className="font-display text-lg font-extrabold tracking-tight text-brand-800">
+              <span className="font-display text-lg font-extrabold tracking-tight text-brand-800 dark:text-brand-300">
                 {m.abbr}
               </span>
               <span className="mono text-[0.6rem] uppercase tracking-widest text-muted">

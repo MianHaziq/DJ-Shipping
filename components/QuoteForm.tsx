@@ -10,16 +10,18 @@ const modes = ["Air Freight", "Ocean Freight (FCL)", "Ocean Freight (LCL)", "Lan
 const incoterms = ["EXW", "FOB", "CIF", "CFR", "DAP", "DDP", "Not sure"];
 
 const fieldCls =
-  "w-full rounded-xl border border-line bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-muted/70 focus:border-brand focus:bg-white focus:ring-2 focus:ring-brand/15";
+  "w-full rounded-xl border border-line bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-muted/70 focus:border-brand focus:bg-card focus:ring-2 focus:ring-brand/15 aria-[invalid=true]:border-accent-600 aria-[invalid=true]:ring-2 aria-[invalid=true]:ring-accent/20";
 const labelCls = "mb-1.5 block text-xs font-semibold text-ink-700";
+
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function QuoteForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
+  const [invalid, setInvalid] = useState<Set<string>>(new Set());
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus("sending");
     setError("");
 
     const form = e.currentTarget;
@@ -32,11 +34,36 @@ export default function QuoteForm() {
     const destination = get("destination");
     const commodity = get("commodity");
 
-    if (!name || !email || !origin || !destination || !commodity) {
+    // Validate: required fields present + email well-formed.
+    const missing = new Set<string>();
+    if (!name) missing.add("name");
+    if (!email) missing.add("email");
+    if (!origin) missing.add("origin");
+    if (!destination) missing.add("destination");
+    if (!commodity) missing.add("commodity");
+
+    const emailMalformed = !!email && !emailPattern.test(email);
+    if (emailMalformed) missing.add("email");
+
+    if (missing.size > 0) {
+      setInvalid(missing);
       setStatus("error");
-      setError("Please complete the required fields marked with an asterisk.");
+      setError(
+        emailMalformed && missing.size === 1
+          ? "Please enter a valid email address."
+          : "Please complete the required fields marked with an asterisk."
+      );
+      // Move focus to the first invalid field for keyboard / screen-reader users.
+      const order = ["name", "email", "origin", "destination", "commodity"];
+      const firstInvalid = order.find((k) => missing.has(k));
+      if (firstInvalid) {
+        (form.elements.namedItem(firstInvalid) as HTMLElement | null)?.focus();
+      }
       return;
     }
+
+    setInvalid(new Set());
+    setStatus("sending");
 
     const lines = [
       "New Quote Request — DJ Shipping",
@@ -62,7 +89,7 @@ export default function QuoteForm() {
 
   if (status === "success") {
     return (
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-brand/20 bg-white p-10 text-center shadow-e2">
+      <div className="flex flex-col items-center justify-center rounded-2xl border border-brand/20 bg-card p-10 text-center shadow-e2">
         <span className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-50 text-brand-700">
           <Icon name="check" size={32} />
         </span>
@@ -73,7 +100,7 @@ export default function QuoteForm() {
           Your details have been packaged into a WhatsApp message — just hit send,
           and our team will respond with a quotation within one business day. You
           can also email{" "}
-          <a className="font-semibold text-brand" href={contact.salesEmail.href}>
+          <a className="font-semibold text-brand dark:text-brand-300" href={contact.salesEmail.href}>
             {contact.salesEmail.label}
           </a>
           .
@@ -93,14 +120,14 @@ export default function QuoteForm() {
     <form
       onSubmit={handleSubmit}
       noValidate
-      className="rounded-2xl border border-line bg-white p-6 shadow-e2 md:p-8"
+      className="rounded-2xl border border-line bg-card p-6 shadow-e2 md:p-8"
     >
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className={labelCls}>
-            Full name <span className="text-accent-600">*</span>
+            Full name <span className="text-accent-700">*</span>
           </label>
-          <input id="name" name="name" type="text" className={fieldCls} placeholder="Jane Doe" />
+          <input id="name" name="name" type="text" required aria-required="true" aria-invalid={invalid.has("name")} className={fieldCls} placeholder="Jane Doe" />
         </div>
         <div>
           <label htmlFor="company" className={labelCls}>
@@ -110,9 +137,9 @@ export default function QuoteForm() {
         </div>
         <div>
           <label htmlFor="email" className={labelCls}>
-            Work email <span className="text-accent-600">*</span>
+            Work email <span className="text-accent-700">*</span>
           </label>
-          <input id="email" name="email" type="email" className={fieldCls} placeholder="jane@acme.com" />
+          <input id="email" name="email" type="email" required aria-required="true" aria-invalid={invalid.has("email")} className={fieldCls} placeholder="jane@acme.com" />
         </div>
         <div>
           <label htmlFor="phone" className={labelCls}>
@@ -142,21 +169,21 @@ export default function QuoteForm() {
         </div>
         <div>
           <label htmlFor="origin" className={labelCls}>
-            Origin <span className="text-accent-600">*</span>
+            Origin <span className="text-accent-700">*</span>
           </label>
-          <input id="origin" name="origin" type="text" className={fieldCls} placeholder="Shanghai, China" />
+          <input id="origin" name="origin" type="text" required aria-required="true" aria-invalid={invalid.has("origin")} className={fieldCls} placeholder="Shanghai, China" />
         </div>
         <div>
           <label htmlFor="destination" className={labelCls}>
-            Destination <span className="text-accent-600">*</span>
+            Destination <span className="text-accent-700">*</span>
           </label>
-          <input id="destination" name="destination" type="text" className={fieldCls} placeholder="Karachi, Pakistan" />
+          <input id="destination" name="destination" type="text" required aria-required="true" aria-invalid={invalid.has("destination")} className={fieldCls} placeholder="Karachi, Pakistan" />
         </div>
         <div>
           <label htmlFor="commodity" className={labelCls}>
-            Commodity <span className="text-accent-600">*</span>
+            Commodity <span className="text-accent-700">*</span>
           </label>
-          <input id="commodity" name="commodity" type="text" className={fieldCls} placeholder="Textile machinery" />
+          <input id="commodity" name="commodity" type="text" required aria-required="true" aria-invalid={invalid.has("commodity")} className={fieldCls} placeholder="Textile machinery" />
         </div>
         <div>
           <label htmlFor="weight" className={labelCls}>
@@ -198,13 +225,13 @@ export default function QuoteForm() {
         <button
           type="submit"
           disabled={status === "sending"}
-          className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-brand px-7 text-sm font-semibold text-white shadow-brand transition-all hover:-translate-y-0.5 hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-brand px-7 text-sm font-semibold text-white shadow-brand transition-all hover:-translate-y-0.5 hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {status === "sending" ? "Preparing…" : "Request a Quote"}
           {status !== "sending" && <Icon name="arrow" size={16} />}
         </button>
         <p className="mono text-xs text-muted">
-          Response within <span className="text-brand">1 business day</span>
+          Response within <span className="text-brand dark:text-brand-300">1 business day</span>
         </p>
       </div>
     </form>

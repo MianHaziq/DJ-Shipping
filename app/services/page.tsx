@@ -23,7 +23,7 @@ export default function ServicesPage() {
         eyebrow="Our Services"
         title={
           <>
-            Three pillars of <span className="text-gradient-brand">logistics</span>{" "}
+            Three pillars of <span className="text-gradient-sky">logistics</span>{" "}
             mastery
           </>
         }

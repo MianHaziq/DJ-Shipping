@@ -12,7 +12,8 @@ export default function SectionLabel({
   tone = "brand",
   className = "",
 }: SectionLabelProps) {
-  const color = tone === "light" ? "text-brand-300" : "text-brand";
+  const color =
+    tone === "light" ? "text-brand-300" : "text-brand dark:text-brand-300";
   const line = tone === "light" ? "bg-brand-300/40" : "bg-brand/30";
   return (
     <div className={`flex items-center gap-3 ${className}`}>

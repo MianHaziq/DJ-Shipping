@@ -9,7 +9,7 @@ interface OfficeCardProps {
 export default function OfficeCard({ office }: OfficeCardProps) {
   return (
     <div
-      className={`relative flex flex-col rounded-2xl border bg-white p-7 shadow-e1 transition-all duration-300 hover:-translate-y-1 hover:shadow-e2 ${
+      className={`relative flex flex-col rounded-2xl border bg-card p-7 shadow-e1 transition-all duration-300 hover:-translate-y-1 hover:shadow-e2 ${
         office.hq ? "border-accent/40" : "border-line hover:border-brand/30"
       }`}
     >
@@ -25,7 +25,7 @@ export default function OfficeCard({ office }: OfficeCardProps) {
               </span>
             )}
           </div>
-          <p className="eyebrow mt-1 text-brand">{office.role}</p>
+          <p className="eyebrow mt-1 text-brand dark:text-brand-300">{office.role}</p>
         </div>
         <span className="mono rounded-lg border border-line px-2.5 py-1 text-sm font-semibold text-brand-700">
           {office.code}
@@ -34,7 +34,7 @@ export default function OfficeCard({ office }: OfficeCardProps) {
 
       {office.address && (
         <p className="mt-4 flex gap-2.5 text-sm text-muted">
-          <Icon name="pin" size={17} className="mt-0.5 shrink-0 text-brand" />
+          <Icon name="pin" size={17} className="mt-0.5 shrink-0 text-brand dark:text-brand-300" />
           {office.address}
         </p>
       )}
@@ -55,14 +55,14 @@ export default function OfficeCard({ office }: OfficeCardProps) {
           href={contact.whatsapp.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand transition-colors hover:text-brand-700"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand dark:text-brand-300 transition-colors hover:text-brand-700"
         >
           <Icon name="whatsapp" size={16} />
           Enquire
         </a>
         <a
           href={contact.phone.href}
-          className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-700 transition-colors hover:text-brand"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-700 transition-colors hover:text-brand dark:hover:text-brand-300"
         >
           <Icon name="phone" size={16} />
           Call

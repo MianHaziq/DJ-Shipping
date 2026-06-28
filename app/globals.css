@@ -1,8 +1,18 @@
 @import "tailwindcss";
 
+/* Class-based dark mode: `.dark` on <html> flips the theme.
+   Applies to the element itself and all descendants. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ============================================================
    DJ Shipping — "Meridian: Precision Logistics" design system
-   Light enterprise theme · cobalt blue + cargo amber
+   Dual-theme: light enterprise + dark cockpit · cobalt blue + cargo amber
+
+   Architecture: every surface/text/line is a semantic token. Dark mode
+   re-points those tokens in the `.dark` block below — components don't
+   need `dark:` variants because they already consume the tokens. The few
+   exceptions (brand/accent shades used as *text* on flipping surfaces)
+   are handled there too.
    ============================================================ */
 
 @theme {
@@ -39,6 +49,9 @@
   --color-paper: #ffffff;
   --color-surface: #f5f8fd;
   --color-surface-2: #eaf1fa;
+  /* raised card surface — was hard-coded `bg-white` everywhere; now a token
+     so it can flip in dark mode */
+  --color-card: #ffffff;
 
   /* ---- Deep sections (footer / CTA / hero scrim) ---- */
   --color-deep: #08214a;
@@ -78,6 +91,60 @@
 }
 
 /* ============================================================
+   Dark theme — re-point the semantic tokens
+   ------------------------------------------------------------
+   Surfaces go to a deep navy-black scale; text inverts to light.
+   The deep navy "scrim" sections (hero / footer / CTA) already use
+   `--color-deep`/`--color-on-deep` and read identically in both modes,
+   so they're left untouched here.
+
+   Brand/accent shades that the components use ONLY as text
+   (brand-700, accent-700) are lightened so they stay legible on the
+   dark surfaces. Shades used as solid fills with white text (brand,
+   brand-600/800/900, accent, accent-600) are kept vivid so buttons and
+   pills keep ≥4.5:1 contrast.
+   ============================================================ */
+
+.dark {
+  /* ---- Surfaces ---- */
+  --color-paper: #0a1120;
+  --color-surface: #0e1729;
+  --color-surface-2: #172339;
+  --color-card: #121d33;
+
+  /* ---- Ink + neutrals (text on dark) ---- */
+  --color-ink: #eaf1fc;
+  --color-ink-700: #bccbe3;
+  --color-muted: #8497b5;
+  --color-line: #233149;
+  --color-line-strong: #35496b;
+
+  /* ---- Brand: tint used as a *background* goes dark; the 700 shade is
+     used as *text* (icon chips, stat numbers, codes) so it goes light ---- */
+  --color-brand-50: #16243f;
+  --color-brand-700: #84acff;
+
+  /* ---- Accent: same split — 50 is a tint bg, 700 is text ---- */
+  --color-accent-50: #3a2410;
+  --color-accent-700: #ffb86a;
+
+  /* ---- Elevation: shadows are near-invisible on dark, so deepen them
+     and let the lighter borders carry the separation ---- */
+  --shadow-e1: 0 1px 2px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-e2: 0 4px 14px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.35);
+  --shadow-e3: 0 20px 44px -12px rgba(0, 0, 0, 0.6), 0 8px 18px rgba(0, 0, 0, 0.4);
+  --shadow-brand: 0 16px 36px -14px rgba(11, 92, 214, 0.6);
+  --shadow-accent: 0 14px 30px -12px rgba(244, 123, 28, 0.55);
+
+  color-scheme: dark;
+}
+
+/* Native UI (scrollbars, form controls, autofill) follows the theme */
+:root {
+  color-scheme: light;
+}
+
+/* ============================================================
    Base
    ============================================================ */
 
@@ -89,14 +156,20 @@
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    /* The page begins (hero) and ends (footer) on the deep navy in both
+       themes, so paint the overscroll/rubber-band area to match — otherwise
+       the white body background flashes above the hero when scrolling up. */
+    background-color: var(--color-deep);
   }
 
   body {
-    background-color: var(--color-paper);
+    /* Deep navy matches the hero (top) and footer (bottom) in both themes, so
+       the rubber-band / overscroll area never flashes white. Content sections
+       paint their own paper/surface backgrounds on top. */
+    background-color: var(--color-deep);
     color: var(--color-ink);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
   }
 
   ::selection {
@@ -111,8 +184,10 @@
     color: var(--color-ink);
   }
 
+  /* brand-400 clears 3:1 non-text contrast on both light surfaces and the
+     deep navy sections (plain brand failed against the navy). */
   :focus-visible {
-    outline: 2px solid var(--color-brand);
+    outline: 2px solid var(--color-brand-400);
     outline-offset: 3px;
     border-radius: 3px;
   }
@@ -178,6 +253,16 @@
   background-size: 22px 22px;
 }
 
+/* On dark surfaces the navy textures vanish — switch to light hairlines */
+.dark .bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(122, 165, 233, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(122, 165, 233, 0.07) 1px, transparent 1px);
+}
+.dark .bg-dots {
+  background-image: radial-gradient(rgba(122, 165, 233, 0.08) 1px, transparent 1px);
+}
+
 /* soft radial brand glow */
 .glow-brand {
   background: radial-gradient(circle at center, rgba(11, 92, 214, 0.16) 0%, transparent 68%);
@@ -208,9 +293,19 @@
   background: linear-gradient(160deg, rgba(8, 33, 74, 0.62) 0%, rgba(11, 92, 214, 0.28) 60%, rgba(8, 33, 74, 0.4) 100%);
 }
 
-/* gradient text for key numerals */
+/* gradient text for key numerals — use on LIGHT surfaces only */
 .text-gradient-brand {
   background: linear-gradient(120deg, var(--color-brand-400), var(--color-brand-700));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* light gradient for accent words on DEEP/dark backgrounds — both stops
+   stay well above 4.5:1 on the navy, unlike .text-gradient-brand whose
+   dark end was ~1.8:1 and effectively invisible. */
+.text-gradient-sky {
+  background: linear-gradient(120deg, var(--color-brand-200), var(--color-brand-100));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -248,7 +343,6 @@
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.7s var(--ease-out-quint), transform 0.7s var(--ease-out-quint);
-  will-change: opacity, transform;
 }
 .js .reveal.is-visible {
   opacity: 1;
@@ -272,6 +366,27 @@
 .reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 0.28s; }
 .reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 0.34s; }
 
+/* ------------------------------------------------------------
+   Above-the-fold entrance — pure CSS, plays on first paint.
+   Critical: hero content (incl. the LCP <h1>) must NOT depend on
+   JS/hydration to become visible. CSS animations run without JS and
+   fill `forwards`, so content is always visible at rest. The
+   prefers-reduced-motion block below snaps these to the end state.
+   ------------------------------------------------------------ */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+.hero-rise > * {
+  opacity: 0;
+  animation: rise-in 0.6s var(--ease-out-quint) forwards;
+}
+.hero-rise > *:nth-child(1) { animation-delay: 0.04s; }
+.hero-rise > *:nth-child(2) { animation-delay: 0.1s; }
+.hero-rise > *:nth-child(3) { animation-delay: 0.16s; }
+.hero-rise > *:nth-child(4) { animation-delay: 0.22s; }
+.hero-rise > *:nth-child(5) { animation-delay: 0.28s; }
+
 /* corridor arc draw-in */
 .arc-draw {
   stroke-dasharray: 1;
@@ -282,26 +397,18 @@
   stroke-dashoffset: 0;
 }
 
-/* marquee for credential strip */
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+/* pulsing "live node" ring on the network maps. CSS (not SMIL) so it is
+   silenced by the prefers-reduced-motion block below — SMIL <animate>
+   ignores that media query entirely. */
+@keyframes pulse-ring {
+  0%, 100% { transform: scale(0.8); opacity: 0.28; }
+  50% { transform: scale(1.5); opacity: 0.05; }
 }
-.marquee-track {
-  display: flex;
-  width: max-content;
-  animation: marquee 38s linear infinite;
+.pulse-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulse-ring 2.4s ease-in-out infinite;
 }
-@media (hover: hover) {
-  .marquee:hover .marquee-track { animation-play-state: paused; }
-}
-
-/* slow float for accent shapes */
-@keyframes floaty {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-.floaty { animation: floaty 7s ease-in-out infinite; }
 
 /* mobile drawer */
 .drawer-enter {
@@ -320,5 +427,6 @@
     scroll-behavior: auto !important;
   }
   .reveal, .reveal-stagger > * { opacity: 1 !important; transform: none !important; }
+  .hero-rise > * { opacity: 1 !important; transform: none !important; animation: none !important; }
   .arc-draw { stroke-dashoffset: 0 !important; }
 }

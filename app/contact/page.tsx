@@ -63,7 +63,7 @@ export default function ContactPage() {
         title={
           <>
             Let&rsquo;s move your{" "}
-            <span className="text-gradient-brand">cargo forward</span>
+            <span className="text-gradient-sky">cargo forward</span>
           </>
         }
         description="Our logistics experts are available to discuss your freight requirements, provide competitive quotations, and design end-to-end solutions tailored to your supply chain."
@@ -98,7 +98,7 @@ export default function ContactPage() {
                   href={m.href}
                   target={m.external ? "_blank" : undefined}
                   rel={m.external ? "noopener noreferrer" : undefined}
-                  className="group flex flex-col rounded-2xl border border-line bg-white p-5 shadow-e1 transition-all hover:-translate-y-1 hover:border-brand/30 hover:shadow-e2"
+                  className="group flex flex-col rounded-2xl border border-line bg-card p-5 shadow-e1 transition-all hover:-translate-y-1 hover:border-brand/30 hover:shadow-e2"
                 >
                   <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-700 transition-colors group-hover:bg-brand group-hover:text-white">
                     <Icon name={m.icon} size={20} />
@@ -111,7 +111,7 @@ export default function ContactPage() {
             </Reveal>
 
             {/* Hours */}
-            <Reveal className="rounded-2xl border border-line bg-white p-6 shadow-e1">
+            <Reveal className="rounded-2xl border border-line bg-card p-6 shadow-e1">
               <div className="flex items-center gap-2.5">
                 <Icon name="clock" size={20} className="text-brand-700" />
                 <h3 className="font-display text-base font-bold text-ink">
@@ -130,7 +130,7 @@ export default function ContactPage() {
                     <dt className="text-muted">{h.day}</dt>
                     <dd
                       className={`text-right font-medium ${
-                        h.hours === "Closed" ? "text-accent-600" : "text-ink-700"
+                        h.hours === "Closed" ? "text-accent-700" : "text-ink-700"
                       }`}
                     >
                       {h.hours}

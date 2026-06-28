@@ -22,7 +22,7 @@ export default function NetworkPage() {
         eyebrow="Network & Locations"
         title={
           <>
-            Present where <span className="text-gradient-brand">trade</span> flows
+            Present where <span className="text-gradient-sky">trade</span> flows
           </>
         }
         description="Five Pakistani offices strategically positioned across commercial zones, supported by a worldwide network covering every major shipping route."
@@ -95,11 +95,13 @@ export default function NetworkPage() {
           {memberships.map((m) => (
             <div
               key={m.abbr}
-              className="flex gap-5 rounded-2xl border border-line bg-white p-7 shadow-e1"
+              className="flex gap-5 rounded-2xl border border-line bg-card p-7 shadow-e1"
             >
-              <span className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl bg-brand-50 text-center">
-                <span className="font-display text-sm font-extrabold leading-none text-brand-800">
-                  {m.abbr.length > 5 ? m.abbr.slice(0, 4) : m.abbr}
+              <span className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl bg-brand-50 px-1 text-center">
+                <span className="font-display text-sm font-extrabold leading-none text-brand-800 dark:text-brand-300">
+                  {/* multi-word abbrs (e.g. "JC TRANS") show the first token,
+                      not a mid-word slice like "JC T" */}
+                  {m.abbr.includes(" ") ? m.abbr.split(" ")[0] : m.abbr}
                 </span>
               </span>
               <div>

@@ -26,7 +26,7 @@ export default function CtaBand({
         className="object-cover opacity-25"
       />
       <div
-        className="absolute inset-0 bg-gradient-to-r from-deep via-deep/92 to-deep/70"
+        className="absolute inset-0 bg-linear-to-r from-deep via-deep/92 to-deep/70"
         aria-hidden="true"
       />
       <div className="bg-grid-deep absolute inset-0 opacity-40" aria-hidden="true" />

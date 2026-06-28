@@ -46,11 +46,11 @@ const rows: { label: string; key: keyof Omit<Mode, "name" | "icon"> }[] = [
 
 export default function ComparisonGrid() {
   return (
-    <div className="reveal overflow-hidden rounded-2xl border border-line bg-white shadow-e1">
+    <div className="reveal overflow-hidden rounded-2xl border border-line bg-card shadow-e1">
       {/* Mobile: stacked cards */}
       <div className="grid gap-px bg-line md:hidden">
         {modes.map((m) => (
-          <div key={m.name} className="bg-white p-6">
+          <div key={m.name} className="bg-card p-6">
             <div className="flex items-center gap-3">
               <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-50 text-brand-700">
                 <Icon name={m.icon} size={20} />

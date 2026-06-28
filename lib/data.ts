@@ -176,8 +176,10 @@ export interface Office {
   hq?: boolean;
   address?: string;
   services: string[];
-  // approx position on the Pakistan map (viewBox 0..100)
-  map: { x: number; y: number };
+  // Position on the Pakistan map (viewBox 0..100), projected from the city's
+  // real lon/lat (longitude scaled by cos(lat) so the country isn't stretched).
+  // labelDir overrides the default left/right side the code label sits on.
+  map: { x: number; y: number; labelDir?: "left" | "right" };
 }
 
 export const offices: Office[] = [
@@ -188,39 +190,39 @@ export const offices: Office[] = [
     hq: true,
     address: "200 MB, DHA Phase 6 · Lahore, Punjab, Pakistan",
     services: ["Customs Clearance", "Freight Forwarding", "Land Transport", "Air Cargo Management"],
-    map: { x: 70, y: 47 },
+    map: { x: 70.6, y: 43.7 }, // 31.55°N, 74.34°E
   },
   {
     city: "Karachi",
     code: "KHI",
     role: "Regional Branch",
-    address: "Port city operations hub · Sindh, Pakistan",
+    address: "Karachi, Sindh, Pakistan",
     services: ["Customs Clearance", "Port Operations", "Ocean Freight", "Land Transport"],
-    map: { x: 30, y: 86 },
+    map: { x: 35.4, y: 80.9 }, // 24.86°N, 67.00°E
   },
   {
     city: "Faisalabad",
-    code: "LYP",
+    code: "FSB",
     role: "Regional Branch",
-    address: "Industrial textile belt · Punjab, Pakistan",
+    address: "Faisalabad, Punjab, Pakistan",
     services: ["Customs Clearance", "Dry Port Liaison", "Land Transport", "Textile Cargo"],
-    map: { x: 62, y: 52 },
+    map: { x: 64.6, y: 44.4, labelDir: "left" }, // 31.42°N, 73.08°E
   },
   {
     city: "Islamabad",
     code: "ISB",
     role: "Regional Branch",
-    address: "Federal capital territory · Pakistan",
+    address: "Islamabad, Pakistan",
     services: ["Customs Clearance", "Air Cargo", "Government Liaison", "Land Transport"],
-    map: { x: 66, y: 30 },
+    map: { x: 64.4, y: 31.8 }, // 33.68°N, 73.05°E
   },
   {
     city: "Sialkot",
     code: "SKT",
     role: "Regional Branch",
-    address: "Export manufacturing hub · Punjab, Pakistan",
+    address: "Sialkot, Punjab, Pakistan",
     services: ["Customs Clearance", "Export Handling", "Air Cargo", "Surgical / Sports Goods"],
-    map: { x: 73, y: 38 },
+    map: { x: 71.5, y: 38.4 }, // 32.49°N, 74.53°E
   },
 ];
 

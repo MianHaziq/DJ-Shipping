@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { navItems, contact } from "@/lib/data";
 import Icon from "@/components/Icon";
 import Logo from "@/components/Logo";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -18,11 +19,6 @@ export default function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  // Close drawer on route change
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
 
   // Body scroll lock + Escape while drawer open
   useEffect(() => {
@@ -46,8 +42,8 @@ export default function Navbar() {
     <header
       className={`fixed inset-x-0 top-0 z-100 transition-all duration-300 ease-out-quint ${
         scrolled
-          ? "border-b border-line bg-white/85 backdrop-blur-xl shadow-e1"
-          : "border-b border-transparent bg-white/0"
+          ? "border-b border-line bg-card/85 backdrop-blur-xl shadow-e1"
+          : "border-b border-transparent bg-transparent"
       }`}
     >
       <div className="container-x">
@@ -70,8 +66,8 @@ export default function Navbar() {
               const active = isActive(item.href);
               const linkColor = scrolled
                 ? active
-                  ? "text-brand"
-                  : "text-ink-700 hover:text-brand"
+                  ? "text-brand dark:text-brand-300"
+                  : "text-ink-700 hover:text-brand dark:hover:text-brand-300"
                 : active
                   ? "text-white"
                   : "text-white/75 hover:text-white";
@@ -95,11 +91,18 @@ export default function Navbar() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <ThemeToggle
+              className={
+                scrolled
+                  ? "border-line bg-card text-ink hover:bg-surface"
+                  : "border-white/25 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
+              }
+            />
             <a
               href={contact.whatsapp.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-brand transition-all hover:-translate-y-0.5 hover:bg-brand-700 sm:inline-flex"
+              className="hidden items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-brand transition-all hover:-translate-y-0.5 hover:bg-brand-800 sm:inline-flex"
             >
               <Icon name="whatsapp" size={16} />
               Request a Quote
@@ -113,7 +116,7 @@ export default function Navbar() {
               aria-expanded={open}
               className={`inline-flex h-11 w-11 items-center justify-center rounded-full border transition-colors lg:hidden ${
                 scrolled
-                  ? "border-line bg-white text-ink"
+                  ? "border-line bg-card text-ink"
                   : "border-white/25 bg-white/10 text-white backdrop-blur-sm"
               }`}
             >
@@ -177,6 +180,7 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={() => setOpen(false)}
                 className={`flex items-center justify-between rounded-xl px-4 py-4 text-lg font-semibold transition-colors ${
                   isActive(item.href)
                     ? "bg-deep-2 text-white"

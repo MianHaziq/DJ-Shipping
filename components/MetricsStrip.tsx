@@ -8,7 +8,11 @@ interface MetricsStripProps {
 export default function MetricsStrip({ overlap = false }: MetricsStripProps) {
   return (
     <div className={`container-x relative z-20 ${overlap ? "-mt-14 md:-mt-20" : ""}`}>
-      <div className="reveal-stagger grid grid-cols-2 overflow-hidden rounded-2xl border border-line bg-white shadow-e3 lg:grid-cols-4">
+      {/* On dark the card, the navy hero above and the near-black page below
+          are all similar tones and the drop shadow vanishes — so elevation
+          comes from a lighter surface + crisper border + a hairline ring,
+          which keeps the overlapping panel reading as a deliberate float. */}
+      <div className="reveal-stagger grid grid-cols-2 overflow-hidden rounded-2xl border border-line bg-card shadow-e3 dark:border-line-strong dark:bg-surface-2 dark:shadow-2xl dark:ring-1 dark:ring-white/5 lg:grid-cols-4">
         {stats.map((s, i) => (
           <div
             key={s.label}

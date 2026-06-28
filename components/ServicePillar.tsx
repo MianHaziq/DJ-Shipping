@@ -17,7 +17,7 @@ export default function ServicePillar({ service, reversed }: ServicePillarProps)
     >
       {/* Visual */}
       <div className={reversed ? "lg:order-2" : ""}>
-        <div className="duotone relative aspect-[4/3] overflow-hidden rounded-2xl border border-line shadow-e2">
+        <div className="duotone relative aspect-4/3 overflow-hidden rounded-2xl border border-line shadow-e2">
           <Image
             src={service.image}
             alt={`${service.title} operations`}
@@ -29,7 +29,8 @@ export default function ServicePillar({ service, reversed }: ServicePillarProps)
             {service.number}
           </span>
           <span className="absolute bottom-5 left-5 z-10 mono text-xs tracking-widest text-white/80">
-            // {service.slug.replace(/-/g, " ").toUpperCase()}
+            {"// "}
+            {service.slug.replace(/-/g, " ").toUpperCase()}
           </span>
         </div>
       </div>
@@ -40,7 +41,7 @@ export default function ServicePillar({ service, reversed }: ServicePillarProps)
           <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand text-white shadow-brand">
             <Icon name={service.icon} size={24} />
           </span>
-          <span className="eyebrow text-accent-600">{service.tagline}</span>
+          <span className="eyebrow text-accent-700">{service.tagline}</span>
         </div>
 
         <h2 className="mt-5 font-display text-[clamp(1.7rem,1.2rem+1.6vw,2.5rem)] font-extrabold text-ink">

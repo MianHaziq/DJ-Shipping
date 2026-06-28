@@ -16,7 +16,7 @@ export default function FeatureCard({
   index,
 }: FeatureCardProps) {
   return (
-    <div className="group relative flex flex-col rounded-2xl border border-line bg-white p-7 shadow-e1 transition-all duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-e2">
+    <div className="group relative flex flex-col rounded-2xl border border-line bg-card p-7 shadow-e1 transition-all duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-e2">
       <div className="flex items-center justify-between">
         <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 text-brand-700 transition-colors duration-300 group-hover:bg-brand group-hover:text-white">
           <Icon name={icon} size={24} />

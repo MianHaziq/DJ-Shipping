@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Archivo, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
@@ -52,20 +52,33 @@ export const metadata: Metadata = {
   },
 };
 
+// Browser chrome colour per system scheme (mobile address bar, etc.)
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a1120" },
+  ],
+};
+
+// Runs synchronously in <head> before first paint. Light is the default theme;
+// dark is only applied when the user has explicitly chosen it (saved in
+// localStorage), so there's no light→dark flash. Also sets `.js` for the
+// progressive-enhancement reveal animations.
+const themeInitScript = `(function(){try{if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark');}catch(e){}document.documentElement.classList.add('js');})();`;
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${archivo.variable} ${plexSans.variable} ${plexMono.variable}`}
     >
-      <body className="min-h-dvh bg-paper text-ink antialiased">
-        <script
-          dangerouslySetInnerHTML={{
-            __html: "document.documentElement.classList.add('js');",
-          }}
-        />
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
+      <body className="min-h-dvh bg-deep text-ink antialiased">
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-200 focus:rounded-md focus:bg-brand focus:px-4 focus:py-2 focus:text-white"

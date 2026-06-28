@@ -28,17 +28,17 @@ export default function PageHero({
         className="object-cover object-center opacity-35"
       />
       <div
-        className="absolute inset-0 bg-gradient-to-r from-deep via-deep/92 to-deep/55"
+        className="absolute inset-0 bg-linear-to-r from-deep via-deep/92 to-deep/55"
         aria-hidden="true"
       />
       <div className="bg-grid-deep absolute inset-0 opacity-40" aria-hidden="true" />
       <div className="container-x relative z-10 py-20 md:py-28">
-        <div className="max-w-3xl">
+        <div className="hero-rise max-w-3xl">
           <SectionLabel tone="light">{eyebrow}</SectionLabel>
-          <h1 className="reveal mt-6 font-display text-[clamp(2.3rem,1.4rem+3.6vw,4rem)] font-extrabold leading-[1.02] tracking-tight text-white">
+          <h1 className="mt-6 font-display text-[clamp(2.3rem,1.4rem+3.6vw,4rem)] font-extrabold leading-[1.02] tracking-tight text-white text-balance">
             {title}
           </h1>
-          <p className="reveal mt-6 max-w-2xl text-lg leading-relaxed text-on-deep-muted">
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-on-deep-muted">
             {description}
           </p>
         </div>

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import HomeHero from "@/components/HomeHero";
 import MetricsStrip from "@/components/MetricsStrip";
 import CredentialStrip from "@/components/CredentialStrip";
@@ -20,9 +19,9 @@ export default function Home() {
       <HomeHero />
 
       {/* Metrics + why choose */}
-      <section className="relative bg-paper pb-20 md:pb-28">
-        <MetricsStrip overlap />
-        <div className="container-x mt-20 md:mt-28">
+      <section className="relative bg-paper py-20 md:py-28">
+        <MetricsStrip />
+        <div className="container-x mt-16 md:mt-24">
           <Reveal className="max-w-2xl">
             <SectionLabel>Why DJ Shipping</SectionLabel>
             <h2 className="mt-5 font-display text-section font-extrabold text-ink">
