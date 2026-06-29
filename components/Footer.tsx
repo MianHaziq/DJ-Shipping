@@ -94,15 +94,6 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href={contact.salesEmail.href}
-                  className="flex items-center gap-3 text-on-deep-muted transition-colors hover:text-white"
-                >
-                  <Icon name="mail" size={18} className="shrink-0 text-brand-300" />
-                  {contact.salesEmail.label}
-                </a>
-              </li>
-              <li>
-                <a
                   href={contact.mgmtEmail.href}
                   className="flex items-center gap-3 text-on-deep-muted transition-colors hover:text-white"
                 >

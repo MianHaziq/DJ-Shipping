@@ -100,8 +100,8 @@ export default function QuoteForm() {
           Your details have been packaged into a WhatsApp message — just hit send,
           and our team will respond with a quotation within one business day. You
           can also email{" "}
-          <a className="font-semibold text-brand dark:text-brand-300" href={contact.salesEmail.href}>
-            {contact.salesEmail.label}
+          <a className="font-semibold text-brand dark:text-brand-300" href={contact.mgmtEmail.href}>
+            {contact.mgmtEmail.label}
           </a>
           .
         </p>

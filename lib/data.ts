@@ -14,7 +14,6 @@ export const company = {
 export const contact = {
   phone: { label: "+92-42-37180721", href: "tel:+924237180721" },
   whatsapp: { label: "0321 4968004", href: "https://wa.me/923214968004" },
-  salesEmail: { label: "sales@djshipping.net", href: "mailto:sales@djshipping.net" },
   mgmtEmail: { label: "jawaid@djshipping.net", href: "mailto:jawaid@djshipping.net" },
   headOffice: "200 MB, DHA Phase 6, Lahore, Punjab, Pakistan",
 } as const;

@@ -6,8 +6,9 @@ import Reveal from "@/components/Reveal";
 import PakistanMap from "@/components/PakistanMap";
 import OfficeCard from "@/components/OfficeCard";
 import WorldReachMap from "@/components/WorldReachMap";
+import MembershipGrid from "@/components/MembershipGrid";
 import CtaBand from "@/components/CtaBand";
-import { offices, memberships } from "@/lib/data";
+import { offices } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Network & Locations",
@@ -80,7 +81,7 @@ export default function NetworkPage() {
       </Section>
 
       {/* Memberships */}
-      <Section tone="surface">
+      <Section tone="surface" id="memberships">
         <Reveal className="max-w-2xl">
           <SectionLabel>Global memberships</SectionLabel>
           <h2 className="mt-5 font-display text-section font-extrabold text-ink">
@@ -91,34 +92,8 @@ export default function NetworkPage() {
             international logistics.
           </p>
         </Reveal>
-        <Reveal stagger className="mt-12 grid gap-6 md:grid-cols-2">
-          {memberships.map((m) => (
-            <div
-              key={m.abbr}
-              className="flex gap-5 rounded-2xl border border-line bg-card p-7 shadow-e1"
-            >
-              <span className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl bg-brand-50 px-1 text-center">
-                <span className="font-display text-sm font-extrabold leading-none text-brand-800 dark:text-brand-300">
-                  {/* multi-word abbrs (e.g. "JC TRANS") show the first token,
-                      not a mid-word slice like "JC T" */}
-                  {m.abbr.includes(" ") ? m.abbr.split(" ")[0] : m.abbr}
-                </span>
-              </span>
-              <div>
-                <div className="flex flex-wrap items-center gap-2">
-                  <h3 className="font-display text-lg font-bold text-ink">
-                    {m.name}
-                  </h3>
-                  <span className="mono rounded-md border border-line px-2 py-0.5 text-[0.6rem] uppercase tracking-widest text-muted">
-                    {m.scope}
-                  </span>
-                </div>
-                <p className="mt-2 text-sm leading-relaxed text-muted">
-                  {m.description}
-                </p>
-              </div>
-            </div>
-          ))}
+        <Reveal className="mt-12">
+          <MembershipGrid />
         </Reveal>
       </Section>
 

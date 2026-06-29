@@ -3,7 +3,7 @@ import PageHero from "@/components/PageHero";
 import Section from "@/components/Section";
 import SectionLabel from "@/components/SectionLabel";
 import Reveal from "@/components/Reveal";
-import QuoteForm from "@/components/QuoteForm";
+// import QuoteForm from "@/components/QuoteForm"; // form temporarily disabled
 import FaqAccordion from "@/components/FaqAccordion";
 import CtaBand from "@/components/CtaBand";
 import Icon from "@/components/Icon";
@@ -23,6 +23,7 @@ const methods: {
   href: string;
   external?: boolean;
   desc: string;
+  featured?: boolean;
 }[] = [
   {
     icon: "whatsapp",
@@ -31,6 +32,7 @@ const methods: {
     href: contact.whatsapp.href,
     external: true,
     desc: "Fastest response — message us directly for quick quotations and cargo status updates.",
+    featured: true,
   },
   {
     icon: "phone",
@@ -41,19 +43,14 @@ const methods: {
   },
   {
     icon: "mail",
-    label: "Sales Email",
-    value: contact.salesEmail.label,
-    href: contact.salesEmail.href,
-    desc: "For commercial enquiries, rate requests and new business discussions.",
-  },
-  {
-    icon: "mail",
     label: "Management",
     value: contact.mgmtEmail.label,
     href: contact.mgmtEmail.href,
-    desc: "A direct channel to senior management for complex shipments or partnerships.",
+    desc: "A direct line to senior management for complex shipments or partnerships.",
   },
 ];
+
+const branches = offices.filter((o) => !o.hq);
 
 export default function ContactPage() {
   return (
@@ -71,99 +68,196 @@ export default function ContactPage() {
         imageAlt="Corporate towers viewed from below against the sky"
       />
 
-      {/* Form + methods */}
+      {/* Contact methods + details */}
       <Section tone="surface">
-        <div className="grid gap-10 lg:grid-cols-[1.25fr_1fr] lg:gap-14">
-          {/* Form */}
-          <Reveal>
-            <SectionLabel>Request a quote</SectionLabel>
-            <h2 className="mt-5 font-display text-section font-extrabold text-ink">
-              Tell us about your shipment
-            </h2>
-            <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted">
-              Share your cargo details and we&rsquo;ll respond with a tailored,
-              end-to-end quotation within one business day.
-            </p>
-            <div className="mt-8">
-              <QuoteForm />
+        <Reveal className="max-w-2xl">
+          <SectionLabel>Get in touch</SectionLabel>
+          <h2 className="mt-5 font-display text-section font-extrabold text-ink">
+            Talk to our logistics team
+          </h2>
+          <p className="mt-5 text-lg leading-relaxed text-muted">
+            Reach us directly through whichever channel suits you — our team
+            responds to quotation requests and cargo enquiries within one
+            business day.
+          </p>
+        </Reveal>
+
+        {/* Method cards */}
+        <Reveal stagger className="mt-12 grid gap-5 md:grid-cols-3">
+          {methods.map((m) => {
+            const featured = m.featured;
+            return (
+              <a
+                key={m.label}
+                href={m.href}
+                target={m.external ? "_blank" : undefined}
+                rel={m.external ? "noopener noreferrer" : undefined}
+                className={`group relative flex flex-col overflow-hidden rounded-2xl border p-7 shadow-e1 transition-all duration-300 hover:-translate-y-1 hover:shadow-e3 ${
+                  featured
+                    ? "border-transparent bg-brand text-white"
+                    : "border-line bg-card hover:border-brand/30"
+                }`}
+              >
+                {featured && (
+                  <div
+                    className="bg-grid-deep absolute inset-0 opacity-30"
+                    aria-hidden="true"
+                  />
+                )}
+                <div className="relative flex items-center justify-between">
+                  <span
+                    className={`flex h-14 w-14 items-center justify-center rounded-2xl transition-colors duration-300 ${
+                      featured
+                        ? "bg-white/15 text-white backdrop-blur-sm"
+                        : "bg-brand-50 text-brand-700 group-hover:bg-brand group-hover:text-white"
+                    }`}
+                  >
+                    <Icon name={m.icon} size={26} />
+                  </span>
+                  <Icon
+                    name="arrow"
+                    size={18}
+                    className={`-rotate-45 transition-all duration-300 group-hover:rotate-0 ${
+                      featured
+                        ? "text-white/70 group-hover:text-white"
+                        : "text-line-strong group-hover:text-brand"
+                    }`}
+                  />
+                </div>
+                <p
+                  className={`eyebrow relative mt-6 ${
+                    featured ? "text-white/80" : "text-muted"
+                  }`}
+                >
+                  {m.label}
+                </p>
+                <p
+                  className={`relative mt-1.5 font-display text-lg font-bold tracking-tight ${
+                    featured ? "text-white" : "text-ink group-hover:text-brand"
+                  }`}
+                >
+                  {m.value}
+                </p>
+                <p
+                  className={`relative mt-3 text-sm leading-relaxed ${
+                    featured ? "text-white/85" : "text-muted"
+                  }`}
+                >
+                  {m.desc}
+                </p>
+              </a>
+            );
+          })}
+        </Reveal>
+
+        {/* Hours + head office */}
+        <div className="mt-5 grid gap-5 lg:grid-cols-2">
+          {/* Business hours */}
+          <Reveal className="flex flex-col rounded-2xl border border-line bg-card p-7 shadow-e1">
+            <div className="flex items-center gap-2.5">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 text-brand-700">
+                <Icon name="clock" size={20} />
+              </span>
+              <h3 className="font-display text-lg font-bold text-ink">
+                Business hours
+              </h3>
+              <span className="mono ml-auto rounded-md border border-line px-2 py-0.5 text-[0.6rem] tracking-widest text-muted">
+                PKT
+              </span>
             </div>
+            <dl className="mt-6 space-y-3">
+              {businessHours.map((h) => (
+                <div
+                  key={h.day}
+                  className="flex items-center justify-between gap-4 border-b border-line pb-3 text-sm last:border-0 last:pb-0"
+                >
+                  <dt className="text-muted">{h.day}</dt>
+                  <dd
+                    className={`text-right font-semibold ${
+                      h.hours === "Closed"
+                        ? "text-accent-700"
+                        : "text-ink-700"
+                    }`}
+                  >
+                    {h.hours}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            <p className="mt-6 flex items-start gap-2 text-xs leading-relaxed text-muted">
+              <Icon name="whatsapp" size={14} className="mt-0.5 shrink-0 text-brand" />
+              WhatsApp messages are monitored outside office hours for urgent
+              cargo enquiries.
+            </p>
           </Reveal>
 
-          {/* Right column */}
-          <div className="space-y-6">
-            <Reveal stagger className="grid gap-4 sm:grid-cols-2">
-              {methods.map((m) => (
-                <a
-                  key={m.label}
-                  href={m.href}
-                  target={m.external ? "_blank" : undefined}
-                  rel={m.external ? "noopener noreferrer" : undefined}
-                  className="group flex flex-col rounded-2xl border border-line bg-card p-5 shadow-e1 transition-all hover:-translate-y-1 hover:border-brand/30 hover:shadow-e2"
-                >
-                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-700 transition-colors group-hover:bg-brand group-hover:text-white">
-                    <Icon name={m.icon} size={20} />
-                  </span>
-                  <p className="eyebrow mt-4 text-muted">{m.label}</p>
-                  <p className="mt-1 text-sm font-semibold text-ink">{m.value}</p>
-                  <p className="mt-2 text-xs leading-relaxed text-muted">{m.desc}</p>
-                </a>
-              ))}
-            </Reveal>
-
-            {/* Hours */}
-            <Reveal className="rounded-2xl border border-line bg-card p-6 shadow-e1">
+          {/* Head office */}
+          <Reveal className="tick-corners relative flex flex-col overflow-hidden rounded-2xl border border-deep-line bg-deep p-7 text-on-deep shadow-e2">
+            <div
+              className="bg-grid-deep absolute inset-0 opacity-40"
+              aria-hidden="true"
+            />
+            <div className="relative flex flex-1 flex-col">
               <div className="flex items-center gap-2.5">
-                <Icon name="clock" size={20} className="text-brand-700" />
-                <h3 className="font-display text-base font-bold text-ink">
-                  Business hours
-                </h3>
-                <span className="mono text-[0.6rem] tracking-widest text-muted">
-                  PKT
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-brand-300 backdrop-blur-sm">
+                  <Icon name="pin" size={20} />
                 </span>
-              </div>
-              <dl className="mt-4 space-y-2.5">
-                {businessHours.map((h) => (
-                  <div
-                    key={h.day}
-                    className="flex items-center justify-between gap-4 border-b border-line pb-2.5 text-sm last:border-0 last:pb-0"
-                  >
-                    <dt className="text-muted">{h.day}</dt>
-                    <dd
-                      className={`text-right font-medium ${
-                        h.hours === "Closed" ? "text-accent-700" : "text-ink-700"
-                      }`}
-                    >
-                      {h.hours}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-              <p className="mt-4 text-xs leading-relaxed text-muted">
-                WhatsApp messages are monitored outside office hours for urgent
-                cargo enquiries.
-              </p>
-            </Reveal>
-
-            {/* Head office */}
-            <Reveal className="tick-corners relative rounded-2xl border border-line bg-deep p-6 text-on-deep shadow-e1">
-              <div className="flex items-center gap-2.5">
-                <Icon name="pin" size={20} className="text-brand-300" />
-                <h3 className="font-display text-base font-bold text-white">
+                <h3 className="font-display text-lg font-bold text-white">
                   Head office
                 </h3>
               </div>
-              <p className="mt-3 text-sm text-on-deep-muted">{contact.headOffice}</p>
-              <p className="mt-4 text-xs text-on-deep-muted">
-                Branch offices in{" "}
-                {offices
-                  .filter((o) => !o.hq)
-                  .map((o) => o.city)
-                  .join(", ")}
-                .
+              <p className="mt-5 text-sm leading-relaxed text-on-deep-muted">
+                {contact.headOffice}
               </p>
+
+              <div className="mt-6">
+                <p className="eyebrow text-on-deep-muted">
+                  Branch offices · {branches.length}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {branches.map((o) => (
+                    <span
+                      key={o.city}
+                      className="mono rounded-full border border-deep-line px-3 py-1 text-xs tracking-wide text-on-deep-muted"
+                    >
+                      {o.city}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <a
+                href="/network"
+                className="mt-auto inline-flex items-center gap-1.5 pt-7 text-sm font-semibold text-brand-300 transition-colors hover:text-white"
+              >
+                Explore our full network
+                <Icon name="arrow" size={16} />
+              </a>
+            </div>
+          </Reveal>
+        </div>
+
+        {/*
+          ── Quote form temporarily disabled ──────────────────────────
+          To re-enable: uncomment the QuoteForm import at the top of this
+          file and the block below.
+
+          <div className="mt-12 grid gap-10 lg:grid-cols-[1.25fr_1fr] lg:gap-14">
+            <Reveal>
+              <SectionLabel>Request a quote</SectionLabel>
+              <h2 className="mt-5 font-display text-section font-extrabold text-ink">
+                Tell us about your shipment
+              </h2>
+              <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted">
+                Share your cargo details and we&rsquo;ll respond with a tailored,
+                end-to-end quotation within one business day.
+              </p>
+              <div className="mt-8">
+                <QuoteForm />
+              </div>
             </Reveal>
           </div>
-        </div>
+        */}
       </Section>
 
       {/* FAQ */}
@@ -185,7 +279,7 @@ export default function ContactPage() {
       <CtaBand
         eyebrow="Your shipment, our responsibility"
         title="Start a conversation with our logistics team today"
-        description="The quickest way to a quotation is WhatsApp — or submit the form above and we'll be in touch within one business day."
+        description="The quickest way to a quotation is WhatsApp — send us your origin, destination and commodity, and we'll respond within one business day."
         image="/images/port.jpg"
       />
     </>
